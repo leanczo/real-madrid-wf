@@ -1,0 +1,4 @@
+<fonts>
+	<font id="realFont" filename="realFont.fnt"/>
+	<font id="realFontTiny" filename="realFontTiny.fnt"/>
+</fonts>

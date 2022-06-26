@@ -1,0 +1,14 @@
+<drawables>
+    <bitmap id="LauncherIcon" filename="launcher_icon.png" />
+    <bitmap id="Logo" filename="logo.png" dithering="none">
+     <palette >
+            <!-- Logo is black on white text, so using four colors to get shading while reducing the color depth to 2 bpp -->
+            <!-- Yellow -->
+            <color>FFAA00</color>
+            <!-- Red -->
+            <color>FF0000</color>
+            <!-- Dark Blue -->
+            <color>0000FF</color>
+        </palette>
+    </bitmap>
+</drawables>
