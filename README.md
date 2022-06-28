@@ -1,5 +1,4 @@
 # Simple Real Madrid
-A simple watch face for Connect IQ Store
-
+[Connect IQ Store](https://apps.garmin.com/en-US/apps/1b7d58cf-4464-4c20-8430-99cfde8ac10d)
 
 ![Preview](./preview.png)
