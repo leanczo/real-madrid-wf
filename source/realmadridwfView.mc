@@ -59,13 +59,13 @@ class realmadridwfView extends WatchUi.WatchFace {
         dc.drawBitmap(widthCenter -52.5, 5, image);
         
         dc.setColor(getApp().getProperty("ForegroundColor"), Graphics.COLOR_TRANSPARENT);
-		dc.drawText(widthCenter + 5 , heightCenter - 10, realFont, timeString, Graphics.TEXT_JUSTIFY_CENTER);
+		dc.drawText(widthCenter, heightCenter - 10, realFont, timeString, Graphics.TEXT_JUSTIFY_CENTER);
 		
 		var now = Time.now();
 		var info = Calendar.info(now, Time.FORMAT_SHORT);
 		var dateStr = Lang.format("$1$-$2$", [info.day,info.month]);
 		dc.setColor(Graphics.COLOR_DK_BLUE, Graphics.COLOR_TRANSPARENT);
-		dc.drawText(widthCenter + 5 , heightCenter + 60, realFontTiny, dateStr, Graphics.TEXT_JUSTIFY_CENTER);
+		dc.drawText(widthCenter, heightCenter + 60, realFontTiny, dateStr, Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     // Called when this View is removed from the screen. Save the
