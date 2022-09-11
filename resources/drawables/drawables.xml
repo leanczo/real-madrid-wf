@@ -11,4 +11,16 @@
             <color>0000FF</color>
         </palette>
     </bitmap>
+    <bitmap id="FootstepsIcon" filename="footsteps.png" dithering="none">
+     <palette >
+            <!-- Black -->
+            <color>000000</color>
+        </palette>
+    </bitmap>
+     <bitmap id="HeartIcon" filename="heart.png" dithering="none">
+     <palette >
+            <!-- Black -->
+            <color>000000</color>
+        </palette>
+    </bitmap>
 </drawables>

@@ -4,32 +4,35 @@ import Toybox.Lang;
 import Toybox.System;
 import Toybox.WatchUi;
 using Toybox.Time.Gregorian as Calendar;
+using Toybox.ActivityMonitor as Act;
+using Toybox.Activity as Acty;
 
 class realmadridwfView extends WatchUi.WatchFace {
 
 	var realFont;
 	var realFontTiny;
-	var image;
+	var realFontXTiny;
+	var logo;
+	var footstepsIcon;
+	var heartIcon;
 
     function initialize() {
     	realFont = WatchUi.loadResource(Rez.Fonts.realFont);
     	realFontTiny = WatchUi.loadResource(Rez.Fonts.realFontTiny);
+    	realFontXTiny = WatchUi.loadResource(Rez.Fonts.realFontXTiny);
         WatchFace.initialize();
     }
 
-    // Load your resources here
     function onLayout(dc as Dc) as Void {
-    	image = WatchUi.loadResource(Rez.Drawables.Logo);
+    	logo = WatchUi.loadResource(Rez.Drawables.Logo);
+    	footstepsIcon = WatchUi.loadResource(Rez.Drawables.FootstepsIcon);
+    	heartIcon = WatchUi.loadResource(Rez.Drawables.HeartIcon);
         setLayout(Rez.Layouts.WatchFace(dc));
     }
 
-    // Called when this View is brought to the foreground. Restore
-    // the state of this View and prepare it to be shown. This includes
-    // loading resources into memory.
     function onShow() as Void {
     }
 
-    // Update the view
     function onUpdate(dc as Dc) as Void {
         // Get the current time and format it correctly
         var timeFormat = "$1$:$2$";
@@ -56,16 +59,67 @@ class realmadridwfView extends WatchUi.WatchFace {
   		var widthCenter = widthScreen / 2;
   		var heightLogo = heightScreen / 9;
   		
-        dc.drawBitmap(widthCenter -52.5, 5, image);
+  		// Steps
+        dc.drawBitmap(widthCenter -52.5, 5, logo);
         
+        var positionXFootstepsIcon = widthScreen / 4 - 12;
+        var positionYFootstepsIcon = heightScreen / 8;
+        var positionXFootstepsText = widthScreen / 4;
+        var positionYFootstepsText = heightScreen*2 / 8;
+        
+        dc.drawBitmap(positionXFootstepsIcon, positionYFootstepsIcon, footstepsIcon);
+        
+        var steps = ActivityMonitor.getInfo().steps.toString();
+        dc.setColor(getApp().getProperty("ForegroundColor"), Graphics.COLOR_TRANSPARENT);
+		dc.drawText(positionXFootstepsText, positionYFootstepsText, realFontXTiny, steps, Graphics.TEXT_JUSTIFY_CENTER);
+        
+        // Heart
+        var positionXHeartIcon = widthScreen * 3 / 4 - 12;
+        var positionYHeartIcon = heightScreen / 8;
+        var positionXHeartText = widthScreen * 3 / 4;
+        var positionYHeartText = heightScreen * 2 / 8;
+        
+        dc.drawBitmap(positionXHeartIcon, positionYHeartIcon, heartIcon);
+        var heartRate = null;
+		if (Act has :getHeartRateHistory) 
+		{
+		 	heartRate = Activity.getActivityInfo().currentHeartRate;
+
+		if(heartRate==null) 
+		{
+			var HRH=Act.getHeartRateHistory(1, true);
+			var HRS=HRH.next();
+
+			if(HRS!=null && HRS.heartRate!= Act.INVALID_HR_SAMPLE)
+			{
+				heartRate = HRS.heartRate;
+			}
+		}
+
+		if(heartRate!=null) 
+		{
+			heartRate = heartRate.toString();
+		}
+		else
+		{
+			heartRate = "--";
+		}
+		}
+		
+		dc.setColor(getApp().getProperty("ForegroundColor"), Graphics.COLOR_TRANSPARENT);
+		dc.drawText(positionXHeartText, positionYHeartText, realFontXTiny, heartRate, Graphics.TEXT_JUSTIFY_CENTER);
+		
+		// Time
         dc.setColor(getApp().getProperty("ForegroundColor"), Graphics.COLOR_TRANSPARENT);
 		dc.drawText(widthCenter, heightCenter - 10, realFont, timeString, Graphics.TEXT_JUSTIFY_CENTER);
 		
+		
+		// Date
 		var now = Time.now();
 		var info = Calendar.info(now, Time.FORMAT_SHORT);
 		var dateStr = Lang.format("$1$-$2$", [info.day,info.month]);
 		dc.setColor(Graphics.COLOR_DK_BLUE, Graphics.COLOR_TRANSPARENT);
-		dc.drawText(widthCenter, heightCenter + 60, realFontTiny, dateStr, Graphics.TEXT_JUSTIFY_CENTER);
+		dc.drawText(widthCenter, heightScreen - 55, realFontTiny, dateStr, Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     // Called when this View is removed from the screen. Save the
