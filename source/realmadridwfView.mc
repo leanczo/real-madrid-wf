@@ -58,57 +58,60 @@ class realmadridwfView extends WatchUi.WatchFace {
   		var heightCenter = heightScreen / 2;
   		var widthCenter = widthScreen / 2;
   		var heightLogo = heightScreen / 9;
+  		dc.drawBitmap(widthCenter -52.5, 5, logo);
   		
-  		// Steps
-        dc.drawBitmap(widthCenter -52.5, 5, logo);
-        
-        var positionXFootstepsIcon = widthScreen / 4 - 12;
-        var positionYFootstepsIcon = heightScreen / 8;
-        var positionXFootstepsText = widthScreen / 4;
-        var positionYFootstepsText = heightScreen*2 / 8;
-        
-        dc.drawBitmap(positionXFootstepsIcon, positionYFootstepsIcon, footstepsIcon);
-        
-        var steps = ActivityMonitor.getInfo().steps.toString();
-        dc.setColor(getApp().getProperty("ForegroundColor"), Graphics.COLOR_TRANSPARENT);
-		dc.drawText(positionXFootstepsText, positionYFootstepsText, realFontXTiny, steps, Graphics.TEXT_JUSTIFY_CENTER);
-        
-        // Heart
-        var positionXHeartIcon = widthScreen * 3 / 4 - 12;
-        var positionYHeartIcon = heightScreen / 8;
-        var positionXHeartText = widthScreen * 3 / 4;
-        var positionYHeartText = heightScreen * 2 / 8;
-        
-        dc.drawBitmap(positionXHeartIcon, positionYHeartIcon, heartIcon);
-        var heartRate = null;
-		if (Act has :getHeartRateHistory) 
-		{
-		 	heartRate = Activity.getActivityInfo().currentHeartRate;
-
-		if(heartRate==null) 
-		{
-			var HRH=Act.getHeartRateHistory(1, true);
-			var HRS=HRH.next();
-
-			if(HRS!=null && HRS.heartRate!= Act.INVALID_HR_SAMPLE)
+  		if(getApp().getProperty("ShowMoreSensors"))
+  		{
+	  		// Steps
+	
+	        var positionXFootstepsIcon = widthScreen / 4 - 12;
+	        var positionYFootstepsIcon = heightScreen / 8;
+	        var positionXFootstepsText = widthScreen / 4;
+	        var positionYFootstepsText = heightScreen*2 / 8;
+	        
+	        dc.drawBitmap(positionXFootstepsIcon, positionYFootstepsIcon, footstepsIcon);
+	        
+	        var steps = ActivityMonitor.getInfo().steps.toString();
+	        dc.setColor(getApp().getProperty("ForegroundColor"), Graphics.COLOR_TRANSPARENT);
+			dc.drawText(positionXFootstepsText, positionYFootstepsText, realFontXTiny, steps, Graphics.TEXT_JUSTIFY_CENTER);
+	        
+	        // Heart
+	        var positionXHeartIcon = widthScreen * 3 / 4 - 12;
+	        var positionYHeartIcon = heightScreen / 8;
+	        var positionXHeartText = widthScreen * 3 / 4;
+	        var positionYHeartText = heightScreen * 2 / 8;
+	        
+	        dc.drawBitmap(positionXHeartIcon, positionYHeartIcon, heartIcon);
+	        var heartRate = null;
+			if (Act has :getHeartRateHistory) 
 			{
-				heartRate = HRS.heartRate;
+			 	heartRate = Activity.getActivityInfo().currentHeartRate;
+	
+			if(heartRate==null) 
+			{
+				var HRH=Act.getHeartRateHistory(1, true);
+				var HRS=HRH.next();
+	
+				if(HRS!=null && HRS.heartRate!= Act.INVALID_HR_SAMPLE)
+				{
+					heartRate = HRS.heartRate;
+				}
 			}
-		}
-
-		if(heartRate!=null) 
-		{
-			heartRate = heartRate.toString();
-		}
-		else
-		{
-			heartRate = "--";
-		}
-		}
-		
-		dc.setColor(getApp().getProperty("ForegroundColor"), Graphics.COLOR_TRANSPARENT);
-		dc.drawText(positionXHeartText, positionYHeartText, realFontXTiny, heartRate, Graphics.TEXT_JUSTIFY_CENTER);
-		
+	
+			if(heartRate!=null) 
+			{
+				heartRate = heartRate.toString();
+			}
+			else
+			{
+				heartRate = "--";
+			}
+			}
+			
+			dc.setColor(getApp().getProperty("ForegroundColor"), Graphics.COLOR_TRANSPARENT);
+			dc.drawText(positionXHeartText, positionYHeartText, realFontXTiny, heartRate, Graphics.TEXT_JUSTIFY_CENTER);
+  		}
+  		
 		// Time
         dc.setColor(getApp().getProperty("ForegroundColor"), Graphics.COLOR_TRANSPARENT);
 		dc.drawText(widthCenter, heightCenter - 10, realFont, timeString, Graphics.TEXT_JUSTIFY_CENTER);
